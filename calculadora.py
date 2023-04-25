@@ -1,4 +1,8 @@
-exit = False
+'''
+      Christopher Morales - 23003861
+      Josué Martínez - 23003956
+'''
+
 # CONSTANTES
 validOperations = ['+', '-', '*', '/', 'sqroot', 'sqr', 'sen', 'cos', 'tan', 'div', '%', 'factorial!']
 letters = [range(65, 91), range(95, 123)]
@@ -12,6 +16,7 @@ def isNumber( expression ):
                   break
       return is_number
 
+# TEXTO A NUMERO
 def strToNumber(expression):
       try:
             print(f"'{expression}'")
@@ -27,6 +32,7 @@ def strToNumber(expression):
             print(expression)
             return 0
 
+# CALCULA LA OPERACION
 def calculate(expression):
       # expression: string
       result = 0
@@ -35,8 +41,8 @@ def calculate(expression):
             expression = expression[:-1]
       space1 = expression.find(" ")
       space2 = expression[space1:].find(" ") + (space1 + 2)
-      num1 = strToNumber(expression[:space1 + 1])
-      num2 = strToNumber(expression[space2 + 1:])
+      # num1 = strToNumber(expression[:space1 + 1])
+      # num2 = strToNumber(expression[space2 + 1:])
       sign = expression[space1 + 1]
       #print(num1)
       # print(num2)
@@ -45,6 +51,10 @@ def calculate(expression):
       # Evaluate and execute operacion
       match sign:
             case '+':
+                  sign = expression.find('+')
+                  num1 = expression[:sign]
+                  num2 = expression[sign + 2:]
+                  print(num1, num2)
                   result = num1 + num2
             case '-':
                   result = num1 - num2
@@ -55,26 +65,31 @@ def calculate(expression):
 
       return result
 
-# MAIN
-while(not exit):
-      option = input("Calculadora >> ")
-      if option == "q" or option == "quit":
-            print("Saliendo ...\nGracias por usar nuestra calculadora.")
-            exit = True
-            break
-      else:
-            answer = str(0)
-            if '(' in option and ')' in option:
-                  operation = option[1:]
-                  operation = operation[:-1]
-                  answer = calculate(operation)
-                  # print(operation)
+# FUNCION MAIN
+def main():
+      exit = False
+      while(not exit):
+            option = input("Calculadora >> ")
+            if option == "q" or option == "quit":
+                  print("Saliendo ...\nGracias por usar nuestra calculadora.")
+                  exit = True
+                  break
             else:
-                  if isNumber(option):
-                        try:
-                              answer = strToNumber(option)
-                        except ValueError:
-                              answer = "ERROR! Expresion no válida"
+                  answer = str(0)
+                  if '(' in option and ')' in option:
+                        operation = option[1:]
+                        operation = operation[:-1]
+                        answer = calculate(operation)
+                        # print(operation)
                   else:
-                        answer = "ERROR! Expresion no válida"
-            print("respuesta >>", answer)
+                        if isNumber(option):
+                              try:
+                                    answer = strToNumber(option)
+                              except ValueError:
+                                    answer = "ERROR! Expresion no válida"
+                        else:
+                              answer = "ERROR! Expresion no válida"
+                  print("respuesta >>", answer)
+
+if __name__ == "__main__":
+      main()
