@@ -19,7 +19,7 @@ def isNumber( expression ):
 # TEXTO A NUMERO
 def strToNumber(expression):
       try:
-            print(f"'{expression}'")
+            #print(f"'{expression}'")
             num = 0
             for index in expression:
                   if index == ".":
@@ -31,37 +31,50 @@ def strToNumber(expression):
       except ValueError:
             print(expression)
             return 0
+      
+def evaluateOperation(operationSign, num1, num2):
+      result = 0
+
+      match operationSign:
+                  case '+':
+                        result = num1 + num2
+                  case '-':
+                        result = num1 - num2
+                  case '*':
+                        result = num1 * num2
+                  case '/':
+                        result = num1 / num2
+                  # TODO: Pending 8 valid operations
+
+      return result
 
 # CALCULA LA OPERACION
 def calculate(expression):
       # expression: string
       result = 0
       if '(' in expression and ')' in expression:
-            expression = expression[1:]
-            expression = expression[:-1]
-      space1 = expression.find(" ")
-      space2 = expression[space1:].find(" ") + (space1 + 2)
-      # num1 = strToNumber(expression[:space1 + 1])
-      # num2 = strToNumber(expression[space2 + 1:])
-      sign = expression[space1 + 1]
-      #print(num1)
-      # print(num2)
-      # print(sign)
-      
-      # Evaluate and execute operacion
-      match sign:
-            case '+':
-                  sign = expression.find('+')
-                  num1 = expression[:sign]
-                  num2 = expression[sign + 2:]
-                  print(num1, num2)
-                  result = num1 + num2
-            case '-':
-                  result = num1 - num2
-            case '*':
-                  result = num1 * num2
-            case '/':
-                  result = num1 / num2
+            startNewExpression = expression.find("(")
+            endNewExpression = expression[startNewExpression:].find(")") + (startNewExpression)
+            newExpression = expression[startNewExpression + 1:endNewExpression]
+            if startNewExpression == 0:
+                  num1 = calculate(newExpression)
+                  num2 = strToNumber(expression[endNewExpression + 4:])
+                  sign = expression[endNewExpression + 2: endNewExpression + 3]
+            else:
+                  num1 = strToNumber(expression[:startNewExpression - 2])
+                  num2 = calculate(newExpression)
+                  sign = expression[startNewExpression - 2: startNewExpression - 1]
+            result = evaluateOperation(sign, num1, num2)
+            #print(f"{type(num1)} '{sign}' {type(num2)}")
+      else:
+            space1 = expression.find(" ")
+            space2 = expression[space1:].find(" ") + (space1 + 2)
+            num1 = strToNumber(expression[:space1 + 1])
+            num2 = strToNumber(expression[space2 + 1:])
+            sign = expression[space1 + 1]
+            
+            # Evaluate and execute operacion
+            result = evaluateOperation(sign, num1, num2)
 
       return result
 
@@ -70,7 +83,7 @@ def main():
       exit = False
       while(not exit):
             option = input("Calculadora >> ")
-            if option == "q" or option == "quit":
+            if option == "q" or option == "Q" or option == "quit":
                   print("Saliendo ...\nGracias por usar nuestra calculadora.")
                   exit = True
                   break
