@@ -1,7 +1,8 @@
 '''
-      Christopher Morales - 23003861
-      Josué Martínez - 23003956
+      Christopher Morales Acuña - 23003861
+      Mario Josué Martínez Olivares - 23003956
 '''
+from math import sqrt, radians, pi, sin, cos, tan
 
 # CONSTANTES
 validOperations = ['+', '-', '*', '/', 'sqroot', 'sqr', 'sen', 'cos', 'tan', 'div', '%', 'factorial!']
@@ -65,7 +66,39 @@ def calculate(expression):
                   num2 = calculate(newExpression)
                   sign = expression[startNewExpression - 2: startNewExpression - 1]
             result = evaluateOperation(sign, num1, num2)
-            #print(f"{type(num1)} '{sign}' {type(num2)}")
+      elif validOperations[4] in expression:
+            # sqroot
+            pos = expression.find(validOperations[4])
+            num = strToNumber(expression[pos + 7:])
+            result = sqrt(num)
+      elif validOperations[5] in expression:
+            # sqr
+            pos = expression.find(validOperations[5])
+            num = strToNumber(expression[pos + 4:])
+            result = pow(num, 2)
+      elif validOperations[6] in expression:
+            # sen
+            pos = expression.find(validOperations[6])
+            num = strToNumber(expression[pos + 4:])
+            result = sin(radians(num))
+      elif validOperations[7] in expression:
+            # cos
+            pos = expression.find(validOperations[7])
+            num = round(radians(strToNumber(expression[pos + 4:])), 2)
+            result = round(cos(num), 6)
+      elif validOperations[8] in expression:
+            # tan
+            pos = expression.find(validOperations[8])
+            num = round(radians(strToNumber(expression[pos + 4:])), 2)
+            result = round(tan(num), 6)
+      elif validOperations[9] in expression:
+            # div
+            space1 = expression.find(" ")
+            space2 = expression[space1:].find(" ") + (space1 + 2)
+            num1 = strToNumber(expression[:space1 + 1])
+            num2 = strToNumber(expression[space2 + 1:])
+            sign = '/'
+            result = evaluateOperation(sign, num1, num2)
       else:
             space1 = expression.find(" ")
             space2 = expression[space1:].find(" ") + (space1 + 2)
