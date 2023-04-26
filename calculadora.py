@@ -29,8 +29,8 @@ def strToNumber(expression):
                   num = int(expression)
             return num
       except ValueError:
-            print(expression)
-            return 0
+            expression = expression[1: -1]
+            return calculate(expression)
       
 def evaluateOperation(operationSign, num1, num2):
       result = 0
