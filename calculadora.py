@@ -2,7 +2,7 @@
       Christopher Morales Acuña - 23003861
       Mario Josué Martínez Olivares - 23003956
 '''
-from math import sqrt, radians, pi, sin, cos, tan
+from math import sqrt, radians, pi, sin, cos, tan, factorial
 
 # CONSTANTES
 validOperations = ['+', '-', '*', '/', 'sqroot', 'sqr', 'sen', 'cos', 'tan', 'div', '%', 'factorial!']
@@ -45,7 +45,8 @@ def evaluateOperation(operationSign, num1, num2):
                         result = num1 * num2
                   case '/':
                         result = num1 / num2
-                  # TODO: Pending 8 valid operations
+                  case '%':
+                        result = num1 % num2
 
       return result
 
@@ -94,11 +95,24 @@ def calculate(expression):
       elif validOperations[9] in expression:
             # div
             space1 = expression.find(" ")
-            space2 = expression[space1:].find(" ") + (space1 + 2)
-            num1 = strToNumber(expression[:space1 + 1])
+            space2 = expression[space1:].find(" ") + (space1 + 4)
+            num1 = strToNumber(expression[:space1])
             num2 = strToNumber(expression[space2 + 1:])
             sign = '/'
             result = evaluateOperation(sign, num1, num2)
+      elif validOperations[10] in expression:
+            space1 = expression.find(" ")
+            space2 = expression[space1:].find(" ") + (space1 + 2)
+            num1 = strToNumber(expression[:space1 + 1])
+            num2 = strToNumber(expression[space2 + 1:])
+            sign = expression[space1 + 1]
+
+            result = evaluateOperation(sign, num1, num2)
+      elif validOperations[11] in expression:
+            space = expression.find(" ")
+            num = strToNumber(expression[space + 1:])
+
+            result = factorial(num)
       else:
             space1 = expression.find(" ")
             space2 = expression[space1:].find(" ") + (space1 + 2)
